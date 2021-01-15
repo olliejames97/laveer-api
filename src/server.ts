@@ -1,16 +1,23 @@
 import { Socket, Server } from "socket.io";
 import { Message } from "./types";
 import { userLeave, userJoin, who, generic } from "./serverMessages";
+import express = require("express");
 
-const server = require("http").createServer();
+// const server: HttpServer = require("http").createServer();
+
+const PORT = process.env.NODE_ENV === "development" ? 4004 : process.env.PORT;
+const NEW_CHAT_MESSAGE_EVENT = "MESSAGE";
+const INDEX = "/index.html";
+
+const server = express()
+  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+
 const io: Server = require("socket.io")(server, {
   cors: {
     origin: "*",
   },
 });
-
-const PORT = process.env.NODE_ENV === "development" ? 4004 : process.env.PORT;
-const NEW_CHAT_MESSAGE_EVENT = "MESSAGE";
 
 type Query = {
   roomId: string;
@@ -57,8 +64,4 @@ io.on("connection", (socket: Socket) => {
     console.log("connection closed");
     socket.leave(roomId);
   });
-});
-
-server.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
 });
