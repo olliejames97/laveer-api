@@ -9,7 +9,7 @@ const io: Server = require("socket.io")(server, {
   },
 });
 
-const PORT = 4004;
+const PORT = process.env.NODE_ENV === "development" ? 4004 : process.env.PORT;
 const NEW_CHAT_MESSAGE_EVENT = "MESSAGE";
 
 type Query = {
