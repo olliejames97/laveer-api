@@ -10,7 +10,7 @@ const NEW_CHAT_MESSAGE_EVENT = "MESSAGE";
 const INDEX = "/index.html";
 
 const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .use((req, res) => res.send("Hello"))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 const io: Server = require("socket.io")(server, {
